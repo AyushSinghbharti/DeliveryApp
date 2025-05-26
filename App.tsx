@@ -7,6 +7,7 @@ import AuthLayout from "./src/screen/auth/AuthLayout";
 import HomepageLayout from "./src/screen/tabs/HomepageLayout";
 import { AuthProvider } from "./src/context/AuthContext";
 import Register from "./src/screen/auth/Register";
+import SplashScreen from "./src/screen/splash/SplashScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -15,6 +16,7 @@ export default function App() {
     <NavigationContainer>
       <AuthProvider>
         <Stack.Navigator>
+          <Stack.Screen name="Splash" component={SplashScreen} />
           <Stack.Screen name="Auth" component={AuthLayout} />
           <Stack.Screen name="Home" component={HomepageLayout} />
           <Stack.Screen name="Register" component={Register} />
