@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,39 +7,31 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
-import { app, auth } from "../../providers/firebase";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function LoginUser() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = () => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log("User loggedIn:", user);
+  const {login, register, logout} = useContext(AuthContext);
+
+  const handleLogin = async() => {
+    await login(email, password)
+      .then(() => {
+        console.log("Login successful");
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log("Error during registration:", errorCode, errorMessage);
+        console.warn("Error during login:", error);
       });
   };
 
-  const handleRegister = () => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log("User Created:", user);
+  const handleRegister = async() => {
+    await register(email, password)
+      .then(() => {
+        console.log("Registration successful");
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.warn("Error during registration:", errorCode, errorMessage);
+        console.warn("Error during registration:", error);
       });
   };
 
