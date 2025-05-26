@@ -8,31 +8,28 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { AuthContext } from "../../context/AuthContext";
+import { useNavigation } from "@react-navigation/native";
 
-export default function LoginUser() {
+export default function LoginAdmin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigation = useNavigation();
 
-  const {login, register, logout} = useContext(AuthContext);
+  const {login, register} = useContext(AuthContext);
 
   const handleLogin = async() => {
-    // await login(email, password, "admin")
-    //   .then(() => {
-    //     console.log("Login successful");
-    //   })
-    //   .catch((error) => {
-    //     console.warn("Error during login:", error);
-    //   });
+    await login(email, password, "admin")
+      .then(() => {
+        navigation.navigate("Home" as never);
+      })
+      .catch((error) => {
+        alert(error.message);
+        console.warn("Error during login:", error);
+      });
   };
 
   const handleRegister = async() => {
-    await register(email, password, "admin")
-      .then(() => {
-        console.log("Registration successful");
-      })
-      .catch((error) => {
-        console.warn("Error during registration:", error);
-      });
+    navigation.navigate("Register" as never, { role: "admin" });
   };
 
   return (

@@ -20,7 +20,8 @@ import {
 } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { auth, db } from "../providers/firebase";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
+import { useNavigation } from "@react-navigation/native";
 
 interface AuthContextType {
   user: User | null;
@@ -35,7 +36,9 @@ interface AuthContextType {
   register: (
     email: string,
     password: string,
-    role: "admin" | "user"
+    role: "admin" | "user",
+    name: string,
+    isNew?: boolean
   ) => Promise<void>;
   logout: () => Promise<void>;
 }
@@ -55,6 +58,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [authToken, setAuthToken] = useState<string | null>(null);
   const [role, setRole] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const navigation = useNavigation();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -64,7 +68,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setUser(currentUser);
         setAuthToken(token);
 
-        console.log("User authenticated:", currentUser);
+        // console.log("User authenticated:", currentUser);
 
         // Fetch role from Firestore
         const userDoc = await getDoc(doc(db, "users", currentUser.uid));
@@ -103,19 +107,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     // Get role from Firestore
     const userDoc = await getDoc(doc(db, "users", user.uid));
+    console.log("User role fetched from Firestore:", userDoc.data()?.role);
     if (userDoc.exists() && userDoc.data().role === role) {
-      // setRole(userDoc.data().role || null);
-      // if(role === "admin") {
-        
-      // }
-
+      setRole(role);
+      navigation.navigate("Home" as never);
+    } else if (userDoc.exists() && userDoc.data().role !== role) {
+      alert(`You are logged in as a ${userDoc.data().role}, not as a ${role}.`);
+      alert("Please log in with the correct credentials.");
     }
   };
 
   const register = async (
     email: string,
     password: string,
-    role: "admin" | "user"
+    role: "admin" | "user",
+    name: string,
+    isNew: boolean = true
   ) => {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
@@ -129,11 +136,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setAuthToken(token);
     setRole(role);
 
-    // Save role in Firestore
     await setDoc(doc(db, "users", user.uid), {
       email: user.email,
+      name: name,
       role: role,
+      createdAt: serverTimestamp(), // Best practice
+      isNew: isNew,
+      age: 0,
+      gender: "male",
+      address: "missing",
+      phone: "+91 1234567890",
+      orderid: [],
     });
+
+    navigation.goBack();
   };
 
   const logout = async () => {

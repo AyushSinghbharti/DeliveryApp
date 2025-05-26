@@ -6,18 +6,20 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AuthLayout from "./src/screen/auth/AuthLayout";
 import HomepageLayout from "./src/screen/tabs/HomepageLayout";
 import { AuthProvider } from "./src/context/AuthContext";
+import Register from "./src/screen/auth/Register";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <AuthProvider>
-      <NavigationContainer>
+    <NavigationContainer>
+      <AuthProvider>
         <Stack.Navigator>
           <Stack.Screen name="Auth" component={AuthLayout} />
           <Stack.Screen name="Home" component={HomepageLayout} />
+          <Stack.Screen name="Register" component={Register} />
         </Stack.Navigator>
-      </NavigationContainer>
-    </AuthProvider>
+      </AuthProvider>
+    </NavigationContainer>
   );
 }
