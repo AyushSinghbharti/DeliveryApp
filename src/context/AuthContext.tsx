@@ -80,7 +80,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setUser(null);
         setAuthToken(null);
         setRole(null);
-        navigation.navigate("AuthLayout" as never);
       }
       setLoading(false);
     });
@@ -157,6 +156,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(null);
     setAuthToken(null);
     setRole(null);
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "Auth" as never }],
+    });
   };
 
   return (

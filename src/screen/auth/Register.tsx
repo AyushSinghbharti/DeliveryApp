@@ -43,7 +43,7 @@ export default function Register () {
       await register(email, password, role, name)
       alert("Please log in to continue");
     } catch (error) {
-      Alert.alert("Registration Error", error);
+      alert(error);
       console.warn("Error during registration:", error);
     }
     setLoading(false);
