@@ -1,15 +1,3 @@
-// useEffect(() => {
-//   const checkAuthToken = async () => {
-//     const token = await AsyncStorage.getItem("authToken");
-//     if (token) {
-//       await setAuthToken(token)
-//     } else {
-//       setAuthToken(null);
-//     }
-//   }
-//   checkAuthToken();
-// }, []);
-
 import React, { createContext, useState, useEffect, ReactNode } from "react";
 import {
   onAuthStateChanged,
@@ -46,7 +34,7 @@ interface AuthContextType {
 export const AuthContext = createContext<AuthContextType>({
   user: null,
   authToken: null,
-  loading: true,
+  loading: false,
   role: null,
   login: async () => {},
   register: async () => {},
@@ -57,20 +45,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [authToken, setAuthToken] = useState<string | null>(null);
   const [role, setRole] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
   useEffect(() => {
+    const checkAuthToken = async () => {
+      const token = await AsyncStorage.getItem("authToken");
+      if (token) {
+        await setAuthToken(token);
+      } else {
+        setAuthToken(null);
+      }
+    };
+    checkAuthToken();
+  }, []);
+
+  useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      setLoading(true);
       if (currentUser) {
         const token = await getIdToken(currentUser);
         await AsyncStorage.setItem("authToken", token);
         setUser(currentUser);
         setAuthToken(token);
 
-        // console.log("User authenticated:", currentUser);
-
-        // Fetch role from Firestore
         const userDoc = await getDoc(doc(db, "users", currentUser.uid));
         if (userDoc.exists()) {
           setRole(userDoc.data().role || null);
@@ -82,6 +80,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setUser(null);
         setAuthToken(null);
         setRole(null);
+        navigation.navigate("AuthLayout" as never);
       }
       setLoading(false);
     });
