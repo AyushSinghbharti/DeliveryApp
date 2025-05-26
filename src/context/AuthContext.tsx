@@ -138,13 +138,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       email: user.email,
       name: name,
       role: role,
-      createdAt: serverTimestamp(), // Best practice
+      createdAt: serverTimestamp(),
       isNew: isNew,
       age: 0,
       gender: "male",
       address: "missing",
       phone: "+91 1234567890",
       orderid: [],
+      id: user.uid,
     });
 
     navigation.goBack();

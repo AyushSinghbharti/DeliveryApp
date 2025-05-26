@@ -20,10 +20,25 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "permissions": [
+        "android.permission.INTERNET"
+      ],
+      "package": "com.ayushsingh.DeliveryApp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "0eca1dd7-1de3-4245-8df2-27b6e4d29a89"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/0eca1dd7-1de3-4245-8df2-27b6e4d29a89"
     }
   }
 }

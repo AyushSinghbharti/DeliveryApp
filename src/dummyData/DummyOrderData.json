@@ -1,0 +1,222 @@
+[
+  {
+    "id": 1,
+    "order_date": "2025-05-20",
+    "delivery_date": "2025-05-25",
+    "product_name": "Wireless Earbuds",
+    "product_description": "High quality noise-cancelling earbuds with Bluetooth 5.0.",
+    "category": "Electronics",
+    "amount": 2499,
+    "user_id": 101,
+    "delivery_boy_id": 501,
+    "image": "https://picsum.photos/500/500",
+    "address": {
+      "street": "123 MG Road",
+      "city": "Bangalore",
+      "state": "Karnataka",
+      "pincode": "560001",
+      "coordinates": {
+        "latitude": 12.9716,
+        "longitude": 77.5946
+      }
+    }
+  },
+  {
+    "id": 2,
+    "order_date": "2025-05-21",
+    "delivery_date": "2025-05-26",
+    "product_name": "Organic Basmati Rice",
+    "product_description": "Premium quality long grain basmati rice, 5kg pack.",
+    "category": "Groceries",
+    "amount": 699,
+    "user_id": 102,
+    "delivery_boy_id": 502,
+    "image": "https://picsum.photos/500/500",
+    "address": {
+      "street": "45 Park Street",
+      "city": "Kolkata",
+      "state": "West Bengal",
+      "pincode": "700016",
+      "coordinates": {
+        "latitude": 22.5726,
+        "longitude": 88.3639
+      }
+    }
+  },
+  {
+    "id": 3,
+    "order_date": "2025-05-22",
+    "delivery_date": "2025-05-27",
+    "product_name": "Running Shoes",
+    "product_description": "Lightweight and durable running shoes for men.",
+    "category": "Footwear",
+    "amount": 3499,
+    "user_id": 103,
+    "delivery_boy_id": 503,
+    "image": "https://picsum.photos/500/500",
+    "address": {
+      "street": "67 Connaught Place",
+      "city": "New Delhi",
+      "state": "Delhi",
+      "pincode": "110001",
+      "coordinates": {
+        "latitude": 28.6315,
+        "longitude": 77.2167
+      }
+    }
+  },
+  {
+    "id": 4,
+    "order_date": "2025-05-23",
+    "delivery_date": "2025-05-28",
+    "product_name": "LED Desk Lamp",
+    "product_description": "Rechargeable LED desk lamp with adjustable brightness.",
+    "category": "Home Decor",
+    "amount": 1299,
+    "user_id": 104,
+    "delivery_boy_id": 504,
+    "image": "https://picsum.photos/500/500",
+    "address": {
+      "street": "221B Baker Street",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pincode": "400001",
+      "coordinates": {
+        "latitude": 19.0760,
+        "longitude": 72.8777
+      }
+    }
+  },
+  {
+    "id": 5,
+    "order_date": "2025-05-20",
+    "delivery_date": "2025-05-24",
+    "product_name": "Bluetooth Speaker",
+    "product_description": "Portable waterproof Bluetooth speaker with 10-hour battery life.",
+    "category": "Electronics",
+    "amount": 1999,
+    "user_id": 105,
+    "delivery_boy_id": 505,
+    "image": "https://picsum.photos/500/500",
+    "address": {
+      "street": "77 Residency Road",
+      "city": "Chennai",
+      "state": "Tamil Nadu",
+      "pincode": "600002",
+      "coordinates": {
+        "latitude": 13.0827,
+        "longitude": 80.2707
+      }
+    }
+  },
+  {
+    "id": 6,
+    "order_date": "2025-05-18",
+    "delivery_date": "2025-05-23",
+    "product_name": "Fitness Tracker",
+    "product_description": "Water-resistant smart fitness tracker with heart rate monitor.",
+    "category": "Wearables",
+    "amount": 2899,
+    "user_id": 106,
+    "delivery_boy_id": 501,
+    "image": "https://picsum.photos/300/400",
+    "address": {
+      "street": "88 Lal Bagh Main Road",
+      "city": "Lucknow",
+      "state": "Uttar Pradesh",
+      "pincode": "226001",
+      "coordinates": {
+        "latitude": 26.8467,
+        "longitude": 80.9462
+      }
+    }
+  },
+  {
+    "id": 7,
+    "order_date": "2025-05-24",
+    "delivery_date": "2025-05-29",
+    "product_name": "Kitchen Knife Set",
+    "product_description": "Stainless steel knife set with ergonomic handles.",
+    "category": "Kitchen",
+    "amount": 1599,
+    "user_id": 107,
+    "delivery_boy_id": 502,
+    "image": "https://picsum.photos/500/500",
+    "address": {
+      "street": "19 Sector 22",
+      "city": "Chandigarh",
+      "state": "Chandigarh",
+      "pincode": "160022",
+      "coordinates": {
+        "latitude": 30.7333,
+        "longitude": 76.7794
+      }
+    }
+  },
+  {
+    "id": 8,
+    "order_date": "2025-05-19",
+    "delivery_date": "2025-05-24",
+    "product_name": "Travel Backpack",
+    "product_description": "Water-resistant backpack with 30L capacity and laptop sleeve.",
+    "category": "Bags",
+    "amount": 1899,
+    "user_id": 108,
+    "delivery_boy_id": 501,
+    "image": "https://picsum.photos/500/500",
+    "address": {
+      "street": "12 Gariahat Road",
+      "city": "Kolkata",
+      "state": "West Bengal",
+      "pincode": "700019",
+      "coordinates": {
+        "latitude": 22.5166,
+        "longitude": 88.3659
+      }
+    }
+  },
+  {
+    "id": 9,
+    "order_date": "2025-05-25",
+    "delivery_date": "2025-05-30",
+    "product_name": "Ceramic Dinner Set",
+    "product_description": "16-piece elegant ceramic dinner set with floral design.",
+    "category": "Home & Kitchen",
+    "amount": 2599,
+    "user_id": 109,
+    "delivery_boy_id": 503,
+    "image": "https://picsum.photos/500/500",
+    "address": {
+      "street": "5 JP Nagar",
+      "city": "Bangalore",
+      "state": "Karnataka",
+      "pincode": "560078",
+      "coordinates": {
+        "latitude": 12.9105,
+        "longitude": 77.5850
+      }
+    }
+  },
+  {
+    "id": 10,
+    "order_date": "2025-05-17",
+    "delivery_date": "2025-05-22",
+    "product_name": "Digital Drawing Tablet",
+    "product_description": "Pressure-sensitive drawing tablet for designers and artists.",
+    "category": "Computers & Accessories",
+    "amount": 4299,
+    "user_id": 110,
+    "delivery_boy_id": 505,
+    "image": "https://picsum.photos/500/500",
+    "address": {
+      "street": "18 Patliputra Colony",
+      "city": "Patna",
+      "state": "Bihar",
+      "pincode": "800013",
+      "coordinates": {
+        "latitude": 25.6127,
+        "longitude": 85.1582
+      }
+    }
+  }
+]
