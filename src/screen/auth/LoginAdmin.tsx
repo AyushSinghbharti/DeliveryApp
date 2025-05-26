@@ -16,17 +16,17 @@ export default function LoginUser() {
   const {login, register, logout} = useContext(AuthContext);
 
   const handleLogin = async() => {
-    await login(email, password)
-      .then(() => {
-        console.log("Login successful");
-      })
-      .catch((error) => {
-        console.warn("Error during login:", error);
-      });
+    // await login(email, password, "admin")
+    //   .then(() => {
+    //     console.log("Login successful");
+    //   })
+    //   .catch((error) => {
+    //     console.warn("Error during login:", error);
+    //   });
   };
 
   const handleRegister = async() => {
-    await register(email, password)
+    await register(email, password, "admin")
       .then(() => {
         console.log("Registration successful");
       })
