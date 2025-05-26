@@ -33,10 +33,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log("AuthProvider mounted: ", user, authToken, loading);
-  }, [user, authToken, loading]);
-  
-  useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
         const token = await getIdToken(currentUser);
