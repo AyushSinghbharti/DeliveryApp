@@ -16,8 +16,7 @@ import { useNavigation } from "@react-navigation/native";
 
 export default function Homepage() {
   const { user, logout } = useContext(AuthContext);
-  const { orders, getDeliveryGuyByOrderId, getOrdersByDeliveryGuy } =
-    useOrderContext();
+  const { orders } = useOrderContext();
   const navigation = useNavigation<any>();
 
   return (
