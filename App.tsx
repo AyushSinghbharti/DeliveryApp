@@ -1,6 +1,4 @@
 import * as React from "react";
-import { useEffect } from "react";
-import { View, Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AuthLayout from "./src/screen/auth/AuthLayout";
@@ -20,12 +18,12 @@ export default function App() {
       <AuthProvider>
         <OrderProvider>
           <Stack.Navigator>
-            {/* <Stack.Screen name="UploadQuery" component={UploadQuery} /> */}
-            <Stack.Screen name="Splash" component={SplashScreen} />
-            <Stack.Screen name="Auth" component={AuthLayout} />
-            <Stack.Screen name="Home" component={HomepageLayout} />
-            <Stack.Screen name="Register" component={Register} />
-            <Stack.Screen name="OrderDetail" component={OrderDetail} />
+            {/* <Stack.Screen name="UploadQuery" component={UploadQuery} options={{ headerShown: false }} /> */}
+            <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="Auth" component={AuthLayout} options={{ headerShown: false }} />
+            <Stack.Screen name="Home" component={HomepageLayout} options={{ headerShown: false }} />
+            <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
+            <Stack.Screen name="OrderDetail" component={OrderDetail} options={{ headerShown: false }} />
           </Stack.Navigator>
         </OrderProvider>
       </AuthProvider>

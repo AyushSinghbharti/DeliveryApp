@@ -22,7 +22,9 @@
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.10.0",
     "expo-dev-client": "~5.1.8",
-    "expo-updates": "~0.28.13"
+    "expo-updates": "~0.28.13",
+    "react-native-pager-view": "6.7.1",
+    "lottie-react-native": "7.2.2"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
