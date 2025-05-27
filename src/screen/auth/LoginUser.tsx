@@ -9,34 +9,40 @@ import {
 } from "react-native";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigation } from "@react-navigation/native";
+import colours from "../../components/colours"; // make sure this file exports the palette provided earlier
+import Button from "../../components/Button";
 
 export default function LoginUser() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
-  const {login, register, logout} = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
 
-  const handleLogin = async() => {
-    await login(email, password, "user")
-      .then(() => {
-        navigation.navigate("Home" as never);
-      })
-      .catch((error) => {
-        alert(error.message);
-        console.warn("Error during login:", error);
+  const handleLogin = async () => {
+    try {
+      await login(email, password, "user");
+      navigation.navigate("Home" as never);
+    } catch (error: any) {
+      alert(error.message);
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Auth" as never }],
       });
+      console.warn("Error during login:", error);
+    }
   };
 
-  const handleRegister = async() => {
-    navigation.navigate("Register" as never, {role: "user" });
+  const handleRegister = async () => {
+    navigation.navigate("Register" as never, { role: "user" });
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Login User</Text>
+      <Text style={styles.title}>User Login</Text>
       <TextInput
         style={styles.input}
         placeholder="Email"
+        placeholderTextColor={colours.userTheme.textSecondary}
         value={email}
         onChangeText={setEmail}
         autoCapitalize="none"
@@ -45,17 +51,26 @@ export default function LoginUser() {
       <TextInput
         style={styles.input}
         placeholder="Password"
+        placeholderTextColor={colours.userTheme.textSecondary}
         value={password}
         onChangeText={setPassword}
         secureTextEntry
       />
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Log In</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={handleRegister}>
-        <Text style={styles.buttonText}>Register</Text>
-      </TouchableOpacity>
-      <StatusBar style="auto" />
+      <Button
+        onPress={handleLogin}
+        styleButton={styles.button}
+        styleText={styles.buttonText}
+        title="Log In"
+        theme="user"
+      />
+
+      <Button
+        onPress={handleRegister}
+        title="Register"
+        styleButton={styles.registerButton}
+        styleText={styles.registerButtonText}
+      />
+      <StatusBar style="dark" />
     </View>
   );
 }
@@ -63,7 +78,7 @@ export default function LoginUser() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: colours.userTheme.background,
     alignItems: "center",
     justifyContent: "center",
     paddingHorizontal: 24,
@@ -72,28 +87,50 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: "bold",
     marginBottom: 32,
+    color: colours.userTheme.textPrimary,
   },
   input: {
     width: "100%",
     height: 48,
-    borderColor: "#ccc",
+    borderColor: colours.userTheme.border,
     borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 16,
     marginBottom: 16,
     fontSize: 16,
+    color: colours.userTheme.textPrimary,
+    backgroundColor: "#fff",
+    borderRightWidth: 2.5,
+    borderBottomWidth: 2.5,
   },
   button: {
     width: "100%",
     height: 48,
-    backgroundColor: "#007bff",
+    backgroundColor: colours.userTheme.primary,
+    borderColor: colours.userTheme.textPrimary,
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 8,
+    shadowColor: 'black',
+  },
+  buttonText: {
+    color: colours.userTheme.textPrimary,
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  registerButton: {
+    width: "100%",
+    height: 48,
+    backgroundColor: colours.userTheme.secondary,
+    borderColor: colours.userTheme.textPrimary,
     borderRadius: 8,
     alignItems: "center",
     justifyContent: "center",
     marginTop: 8,
   },
-  buttonText: {
-    color: "#fff",
+  registerButtonText: {
+    color: colours.userTheme.textPrimary,
     fontSize: 18,
     fontWeight: "bold",
   },

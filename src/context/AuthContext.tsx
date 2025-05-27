@@ -103,12 +103,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(user);
     setAuthToken(token);
 
-    // Get role from Firestore
     const userDoc = await getDoc(doc(db, "users", user.uid));
-    console.log("User role fetched from Firestore:", userDoc.data()?.role);
     if (userDoc.exists() && userDoc.data().role === role) {
       setRole(role);
-      navigation.navigate("Home" as never);
     } else if (userDoc.exists() && userDoc.data().role !== role) {
       alert(`You are logged in as a ${userDoc.data().role}, not as a ${role}.`);
       alert("Please log in with the correct credentials.");
