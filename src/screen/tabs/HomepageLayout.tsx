@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import Homepage from "./Homepage";
 import CheckOrder from "./CheckOrder";
-import colors from "../../components/colours"; // adjust the path as needed
+import colors from "../../components/colours";
 
 const Tab = createBottomTabNavigator();
 
