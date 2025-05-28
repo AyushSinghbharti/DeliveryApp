@@ -16,8 +16,12 @@ import {
 import { db } from "../providers/firebase";
 import { ProductOrder } from "../types/OrderInterface";
 import DeliveryGuy from "../types/DeliveryGuyInterface";
+import MapView, { Marker } from "react-native-maps";
+import MapViewDirections from "react-native-maps-directions";
+import * as Location from "expo-location";
 
 interface OrderContextProps {
+  currentLocation: Location.LocationObjectCoords | undefined;
   orders: ProductOrder[];
   deliveryGuys: DeliveryGuy[];
   getDeliveryGuyByOrderId: (orderId: number) => Promise<DeliveryGuy | null>;
@@ -29,6 +33,23 @@ const OrderContext = createContext<OrderContextProps | undefined>(undefined);
 export const OrderProvider = ({ children }: { children: ReactNode }) => {
   const [orders, setOrders] = useState<ProductOrder[]>([]);
   const [deliveryGuys, setDileveryGuys] = useState<DeliveryGuy[]>([]);
+  const [currentLocation, setCurrentLocation] =
+    useState<Location.LocationObjectCoords>();
+
+  //Fetch Location:
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        alert("permission is not granted");
+        console.log("Permission to access location was denied");
+        return;
+      }
+
+      let loc = await Location.getCurrentPositionAsync({});
+      setCurrentLocation(loc.coords);
+    })();
+  }, []);
 
   // Fetch all orders on initial load
   useEffect(() => {
@@ -45,18 +66,22 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
     };
 
     const getDeliveryGuys = async (): Promise<DeliveryGuy[]> => {
-    try {
-      const deliveryGuysSnapshot = await getDocs(collection(db, "deliveryGuys"));
-      const deliveryGuysList: DeliveryGuy[] = deliveryGuysSnapshot.docs.map((doc) => ({
-        ...(doc.data() as DeliveryGuy),
-      }))
-      setDileveryGuys(deliveryGuysList);
-      return deliveryGuysList;
-    } catch (error) {
-      console.error("Error fetching delivery guys:", error);
-      return [];
-    }
-  };
+      try {
+        const deliveryGuysSnapshot = await getDocs(
+          collection(db, "deliveryGuys")
+        );
+        const deliveryGuysList: DeliveryGuy[] = deliveryGuysSnapshot.docs.map(
+          (doc) => ({
+            ...(doc.data() as DeliveryGuy),
+          })
+        );
+        setDileveryGuys(deliveryGuysList);
+        return deliveryGuysList;
+      } catch (error) {
+        console.error("Error fetching delivery guys:", error);
+        return [];
+      }
+    };
 
     getDeliveryGuys();
     fetchOrders();
@@ -120,7 +145,13 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <OrderContext.Provider
-      value={{ orders, deliveryGuys, getDeliveryGuyByOrderId, getOrdersByDeliveryGuy }}
+      value={{
+        currentLocation,
+        orders,
+        deliveryGuys,
+        getDeliveryGuyByOrderId,
+        getOrdersByDeliveryGuy,
+      }}
     >
       {children}
     </OrderContext.Provider>

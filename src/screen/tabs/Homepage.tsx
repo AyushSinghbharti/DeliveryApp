@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import {
   View,
   Text,
@@ -15,11 +15,15 @@ import { useOrderContext } from "../../context/OrderContext";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import colours from "../../components/colours";
+import MapView, { Marker } from "react-native-maps";
+import MapViewDirections from "react-native-maps-directions";
+import * as Location from "expo-location";
 
 export default function Homepage() {
   const { userInfo, logout } = useContext(AuthContext);
   const { orders, deliveryGuys } = useOrderContext();
   const navigation = useNavigation<any>();
+
   const DetailList = ({ item }: { item: any }) => {
     return (
       <TouchableOpacity

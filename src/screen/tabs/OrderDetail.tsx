@@ -15,6 +15,14 @@ import { ProductOrder } from "../../types/OrderInterface";
 import { useOrderContext } from "../../context/OrderContext";
 import colours from "../../components/colours";
 import DeliveryGuy from "../../types/DeliveryGuyInterface";
+import MapView, {
+  Marker,
+  Polyline,
+  UrlTile,
+  PROVIDER_DEFAULT,
+  PROVIDER_GOOGLE,
+} from "react-native-maps";
+import MapViewDirections from "react-native-maps-directions";
 
 type RootStackParamList = {
   OrderDetail: { order: ProductOrder };
@@ -24,8 +32,46 @@ const OrderDetailsScreen = () => {
   const route = useRoute<RouteProp<RootStackParamList, "OrderDetail">>();
   const { order } = route.params;
   const [deliveryGuy, setDeliveryGuy] = useState<DeliveryGuy | null>();
-  const { getDeliveryGuyByOrderId } = useOrderContext();
+  const { currentLocation, getDeliveryGuyByOrderId } = useOrderContext();
+  const [routeCoords, setRouteCoords] = useState([]);
+  const [distance, setDistance] = useState<Number>(0);
   const navigation = useNavigation();
+
+  const YOUR_API_KEY =
+    "5b3ce3597851110001cf62483ed3f8c022254b2d92e9cf43da3de4de";
+  const origin = currentLocation;
+  const destination = {
+    latitude: order.address.coordinates.latitude,
+    longitude: order.address.coordinates.longitude,
+  };
+
+  useEffect(() => {
+    const fetchRoute = async () => {
+      const apiKey = "5b3ce3597851110001cf62483ed3f8c022254b2d92e9cf43da3de4de";
+      const url = `https://api.openrouteservice.org/v2/directions/driving-car?api_key=${apiKey}&start=${origin.longitude},${origin.latitude}&end=${destination.longitude},${destination.latitude}`;
+
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        setDistance(
+          Number(
+            (data.features[0].properties.summary.distance / 1000).toFixed(2)
+          )
+        );
+        const coords = data.features[0].geometry.coordinates.map(
+          ([lon, lat]) => ({
+            latitude: lat,
+            longitude: lon,
+          })
+        );
+        setRouteCoords(coords);
+      } catch (err) {
+        console.error("Failed to fetch route:", err);
+      }
+    };
+
+    fetchRoute();
+  }, []);
 
   useEffect(() => {
     const fetchDeliveryGuy = async () => {
@@ -61,7 +107,10 @@ const OrderDetailsScreen = () => {
 
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => navigation.goBack()}
+        >
           <Ionicons name="arrow-back" size={24} color="#1b130d" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>{order.product_name} Order</Text>
@@ -150,12 +199,64 @@ const OrderDetailsScreen = () => {
         {/* Current Location Section */}
         <Text style={styles.sectionTitle}>Current Location</Text>
         <View style={styles.mapContainer}>
-          <Image
-            source={{
-              uri: "https://cdn.usegalileo.ai/maps/4a05a9f8-d8ed-4215-9bbe-d3ce95dfe367.png",
-            }}
+          <MapView
             style={styles.mapImage}
-          />
+            provider={PROVIDER_DEFAULT}
+            initialRegion={{
+              latitude: origin?.latitude ?? 0,
+              longitude: origin?.longitude ?? 0,
+              latitudeDelta: 0.05,
+              longitudeDelta: 0.05,
+            }}
+          >
+            <UrlTile
+              urlTemplate="https://c.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              maximumZ={19}
+              flipY={false}
+            />
+
+            {origin && (
+              <Marker coordinate={origin} title="You" titleVisibility="visible">
+                {/* <View style={{justifyContent: 'center', alignItems: 'center'}}> */}
+                <View
+                  style={{
+                    flex: 1,
+                    backgroundColor: "white",
+                    width: 75,
+                    height: 75,
+                    paddingHorizontal: 8,
+                    paddingVertical: 8,
+                    borderRadius: 5,
+                    elevation: 5,
+                    borderWidth: 1,
+                    borderBottomWidth: 2.5,
+                    borderRightWidth: 2.5,
+                    borderColor: "black",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Image
+                    source={{ uri: deliveryGuy?.profile_image }}
+                    style={{ height: 36, width: 36, borderWidth: 1 }}
+                  />
+                  <Text style={{ fontWeight: "bold", fontSize: 12, textAlign: 'center' }}>
+                    {distance.toString()} km Away
+                  </Text>
+                </View>
+                {/* </View> */}
+              </Marker>
+            )}
+            <Marker coordinate={destination} title="End" />
+
+            {routeCoords.length > 0 && (
+              <Polyline
+                coordinates={routeCoords}
+                strokeColor="blue"
+                strokeWidth={4}
+              />
+            )}
+          </MapView>
         </View>
 
         {/* Deliveryman Section */}
@@ -165,7 +266,9 @@ const OrderDetailsScreen = () => {
             <View style={styles.deliverymanImageContainer}>
               <Image
                 source={{
-                  uri: deliveryGuy?.profile_image || "",
+                  uri:
+                    deliveryGuy?.profile_image ||
+                    "https://i.redd.it/i-got-bored-so-i-decided-to-draw-a-random-image-on-the-v0-4ig97vv85vjb1.png?width=1280&format=png&auto=webp&s=7177756d1f393b6e093596d06e1ba539f723264b",
                 }}
                 style={styles.deliverymanImage}
               />
@@ -355,7 +458,7 @@ const styles = StyleSheet.create({
   deliverymanImageContainer: {
     borderRadius: 50,
     marginRight: 12,
-    ...elevatedBorder
+    ...elevatedBorder,
   },
   deliverymanImage: {
     width: 56,
@@ -383,7 +486,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     minWidth: 84,
     alignItems: "center",
-    ...elevatedBorder
+    ...elevatedBorder,
   },
   callButtonText: {
     fontSize: 14,
@@ -403,7 +506,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 24,
     minHeight: 48,
-    ...elevatedBorder
+    ...elevatedBorder,
   },
   primaryButtonText: {
     fontSize: 16,

@@ -18,7 +18,6 @@ export default function SplashScreen() {
   const translateX = useRef(new Animated.Value(-100)).current;
 
   useEffect(() => {
-    // Navigate after 2 seconds
     const timer = setTimeout(() => {
       if (user) {
         navigation.reset({
