@@ -1,0 +1,10 @@
+npx expo build
+npx expo run:android
+npx expo run:android --device 
+npx expo install expo-dev-client (Install new package need to rerun device from base)
+npx expo prebuild --clean (If added new plugin/Permission/etc... need to run this)
+Note: Can Build app direclty in android studio if pressed build on lower left corner if .android file imported in AS
+npx expo run:android --varient release (.aab file)
+
+cd android
+./gradlew assembleRelease
