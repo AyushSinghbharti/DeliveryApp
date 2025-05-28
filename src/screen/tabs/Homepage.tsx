@@ -12,15 +12,14 @@ import {
 import { StatusBar } from "expo-status-bar";
 import { AuthContext } from "../../context/AuthContext";
 import { useOrderContext } from "../../context/OrderContext";
-import { useNavigation, NavigationProp } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import colours from "../../components/colours";
 
 export default function Homepage() {
   const { userInfo, logout } = useContext(AuthContext);
-  const { orders } = useOrderContext();
+  const { orders, deliveryGuys } = useOrderContext();
   const navigation = useNavigation<any>();
-
   const DetailList = ({ item }: { item: any }) => {
     return (
       <TouchableOpacity
@@ -79,7 +78,6 @@ export default function Homepage() {
     <View style={styles.container}>
       <StatusBar style="dark" />
 
-      {/* Header Section */}
       <View style={styles.userSection}>
         <View style={styles.userInfo}>
           <View style={styles.avatar}>
@@ -100,7 +98,6 @@ export default function Homepage() {
         </TouchableOpacity>
       </View>
 
-      {/* Search and Filter */}
       <View style={styles.searchContainer}>
         <View style={styles.searchBox}>
           <Ionicons
@@ -123,7 +120,6 @@ export default function Homepage() {
         </TouchableOpacity>
       </View>
 
-      {/* Recent order Filter */}
       <View style={styles.filterRow}>
         {["All", "Recent Products", "Returned"].map((category, index) => (
           <TouchableOpacity
@@ -148,7 +144,6 @@ export default function Homepage() {
         ))}
       </View>
 
-      {/* All Orders */}
       <ScrollView showsVerticalScrollIndicator={false}>
         <Text style={styles.sectionTitle}>Recent Orders ({2})</Text>
         <ScrollView
@@ -156,7 +151,7 @@ export default function Homepage() {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.summaryCards}
         >
-          {orders.slice(0, 2).map((item, index) => (
+          {orders.slice(0, 4).map((item, index) => (
             <View key={item.id}>{RecentList({ item, index })}</View>
           ))}
         </ScrollView>

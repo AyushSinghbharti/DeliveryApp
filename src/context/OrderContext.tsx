@@ -17,18 +17,18 @@ import { db } from "../providers/firebase";
 import { ProductOrder } from "../types/OrderInterface";
 import DeliveryGuy from "../types/DeliveryGuyInterface";
 
-
 interface OrderContextProps {
   orders: ProductOrder[];
+  deliveryGuys: DeliveryGuy[];
   getDeliveryGuyByOrderId: (orderId: number) => Promise<DeliveryGuy | null>;
   getOrdersByDeliveryGuy: (deliveryGuyId: number) => Promise<ProductOrder[]>;
 }
 
 const OrderContext = createContext<OrderContextProps | undefined>(undefined);
 
-
 export const OrderProvider = ({ children }: { children: ReactNode }) => {
   const [orders, setOrders] = useState<ProductOrder[]>([]);
+  const [deliveryGuys, setDileveryGuys] = useState<DeliveryGuy[]>([]);
 
   // Fetch all orders on initial load
   useEffect(() => {
@@ -44,6 +44,21 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
       }
     };
 
+    const getDeliveryGuys = async (): Promise<DeliveryGuy[]> => {
+    try {
+      const deliveryGuysSnapshot = await getDocs(collection(db, "deliveryGuys"));
+      const deliveryGuysList: DeliveryGuy[] = deliveryGuysSnapshot.docs.map((doc) => ({
+        ...(doc.data() as DeliveryGuy),
+      }))
+      setDileveryGuys(deliveryGuysList);
+      return deliveryGuysList;
+    } catch (error) {
+      console.error("Error fetching delivery guys:", error);
+      return [];
+    }
+  };
+
+    getDeliveryGuys();
     fetchOrders();
   }, []);
 
@@ -72,7 +87,11 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
     deliveryGuyId: number
   ): Promise<ProductOrder[]> => {
     try {
-      const deliveryGuyRef = doc(db, "deliveryGuys", `deliveryGuy-${deliveryGuyId}`);
+      const deliveryGuyRef = doc(
+        db,
+        "deliveryGuys",
+        `deliveryGuy-${deliveryGuyId}`
+      );
       const guySnap = await getDoc(deliveryGuyRef);
 
       if (guySnap.exists()) {
@@ -101,7 +120,7 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <OrderContext.Provider
-      value={{ orders, getDeliveryGuyByOrderId, getOrdersByDeliveryGuy }}
+      value={{ orders, deliveryGuys, getDeliveryGuyByOrderId, getOrdersByDeliveryGuy }}
     >
       {children}
     </OrderContext.Provider>
