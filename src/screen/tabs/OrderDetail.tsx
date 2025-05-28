@@ -10,7 +10,7 @@ import {
   StatusBar,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { RouteProp, useRoute } from "@react-navigation/native";
+import { RouteProp, useRoute, useNavigation } from "@react-navigation/native";
 import { ProductOrder } from "../../types/OrderInterface";
 import { useOrderContext } from "../../context/OrderContext";
 import colours from "../../components/colours";
@@ -25,6 +25,7 @@ const OrderDetailsScreen = () => {
   const { order } = route.params;
   const [deliveryGuy, setDeliveryGuy] = useState<DeliveryGuy | null>();
   const { getDeliveryGuyByOrderId } = useOrderContext();
+  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchDeliveryGuy = async () => {
@@ -60,7 +61,7 @@ const OrderDetailsScreen = () => {
 
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton}>
+        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color="#1b130d" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>{order.product_name} Order</Text>
@@ -171,10 +172,10 @@ const OrderDetailsScreen = () => {
             </View>
             <View style={styles.deliverymanDetails}>
               <Text style={styles.deliverymanName}>
-                Delivery Boy #{order.delivery_boy_id}
+                {deliveryGuy?.name} #{order.delivery_boy_id}
               </Text>
               <Text style={styles.deliverymanRating}>
-                Assigned Delivery Personnel
+                Mob no: {deliveryGuy?.phone_number}
               </Text>
             </View>
           </View>
