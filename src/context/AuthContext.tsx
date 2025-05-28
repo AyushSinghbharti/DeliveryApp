@@ -13,6 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 
 interface AuthContextType {
   user: User | null;
+  userInfo: Record<string, any>;
   authToken: string | null;
   loading: boolean;
   role: string | null;
@@ -33,6 +34,7 @@ interface AuthContextType {
 
 export const AuthContext = createContext<AuthContextType>({
   user: null,
+  userInfo: {},
   authToken: null,
   loading: false,
   role: null,
@@ -43,6 +45,7 @@ export const AuthContext = createContext<AuthContextType>({
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [userInfo, setUserInfo] = useState<Object | null>();
   const [authToken, setAuthToken] = useState<string | null>(null);
   const [role, setRole] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -71,6 +74,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
         const userDoc = await getDoc(doc(db, "users", currentUser.uid));
         if (userDoc.exists()) {
+          setUserInfo(userDoc.data());
           setRole(userDoc.data().role || null);
         } else {
           setRole(null);
@@ -162,7 +166,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, authToken, loading, role, login, register, logout }}
+      value={{ user, authToken, loading, role, login, register, logout, userInfo }}
     >
       {children}
     </AuthContext.Provider>

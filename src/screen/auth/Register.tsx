@@ -15,7 +15,6 @@ import { RouteProp, useRoute } from "@react-navigation/native";
 import colours from "../../components/colours";
 import CustomButton from "../../components/Button";
 import Button from "../../components/Button";
-// import { useNavigation } from "@react-navigation/native";
 
 type RoleType = "admin" | "user";
 type RegisterRouteProp = RouteProp<

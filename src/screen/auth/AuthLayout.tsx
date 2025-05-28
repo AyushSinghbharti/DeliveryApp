@@ -31,7 +31,6 @@ export default function AuthLayout() {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" />
       <Tab.Navigator
         initialRouteName="LoginUser"
         screenOptions={({ route }) => ({
@@ -55,7 +54,7 @@ export default function AuthLayout() {
             fontWeight: "bold",
             fontSize: 16,
           },
-          swipeEnabled: false,
+          swipeEnabled: true,
           lazy: true,
         })}
       >

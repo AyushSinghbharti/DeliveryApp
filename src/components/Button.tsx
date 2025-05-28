@@ -20,8 +20,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#FE8C00',
     borderRadius: 50,
-    width: 327,
-    height: 52,
+    // width: 327,
+    // height: 52,
     borderWidth: 1,
     borderRightWidth: 2.5,
     borderBottomWidth: 2.5,
@@ -35,8 +35,9 @@ const styles = StyleSheet.create({
     
   },
   touchPart: {
+    flex: 1,
     width: '100%',
-    height: '100%',
+    // height: '100%',
     alignItems: 'center',
     justifyContent: 'center'
   }

@@ -6,7 +6,7 @@ const Tab = createBottomTabNavigator();
 
 export default function HomepageLayout() {
   return (
-      <Tab.Navigator>
+      <Tab.Navigator screenOptions={{headerShown: false}}>
         <Tab.Screen name="Homepage" component={Homepage} />
         <Tab.Screen name="CheckOrder" component={CheckOrder} />
       </Tab.Navigator>
