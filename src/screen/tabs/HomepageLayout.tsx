@@ -23,7 +23,7 @@ export default function HomepageLayout() {
           if (route.name === "Homepage") {
             iconName = "home";
           } else if (route.name === "Explore") {
-            iconName = "search";
+            iconName = "compass-outline";
           }
 
           return <Ionicons name={iconName} size={size} color={color} />;

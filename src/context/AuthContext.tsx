@@ -52,18 +52,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    const checkAuthToken = async () => {
-      const token = await AsyncStorage.getItem("authToken");
-      if (token) {
-        await setAuthToken(token);
-      } else {
-        setAuthToken(null);
-      }
-    };
-    checkAuthToken();
-  }, []);
-
-  useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setLoading(true);
       if (currentUser) {
@@ -110,7 +98,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const userDoc = await getDoc(doc(db, "users", user.uid));
     if (userDoc.exists() && userDoc.data().role === role) {
       setRole(role);
+      if (userDoc.data().role === "admin") {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "AdminHomePage" as never }],
+        });
+      } else {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "Home" as never }],
+        });
+      }
     } else if (userDoc.exists() && userDoc.data().role !== role) {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Auth" as never }],
+      });
       alert(`You are logged in as a ${userDoc.data().role}, not as a ${role}.`);
       alert("Please log in with the correct credentials.");
     }
@@ -166,7 +169,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, authToken, loading, role, login, register, logout, userInfo }}
+      value={{
+        user,
+        authToken,
+        loading,
+        role,
+        login,
+        register,
+        logout,
+        userInfo,
+      }}
     >
       {children}
     </AuthContext.Provider>

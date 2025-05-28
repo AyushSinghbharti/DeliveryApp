@@ -3,21 +3,19 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import LoginAdmin from "./LoginAdmin";
 import LoginUser from "./LoginUser";
 import { AuthContext } from "../../context/AuthContext";
-import { useNavigation } from "@react-navigation/native";
 import { ActivityIndicator, View, StyleSheet, StatusBar } from "react-native";
 import colours from "../../components/colours";
 
 const Tab = createMaterialTopTabNavigator();
 
 export default function AuthLayout() {
-  const navigation = useNavigation();
   const { authToken, loading } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (!loading) setIsLoading(false);
-    if (authToken) {
-      navigation.navigate("Home" as never);
+    else if (authToken) {
+      setIsLoading(false);
     }
   }, [authToken, loading]);
 
@@ -55,7 +53,6 @@ export default function AuthLayout() {
             fontSize: 16,
           },
           swipeEnabled: true,
-          lazy: true,
         })}
       >
         <Tab.Screen

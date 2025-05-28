@@ -1,11 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 export default function CheckOrder() {
   return (
     <View style={styles.container}>
-      <Text>CheckOrder</Text>
+      <Text>Explore And Buy New Items as u like!!!</Text>
       <StatusBar style="auto" />
     </View>
   );

@@ -22,7 +22,6 @@ export default function LoginAdmin() {
   const handleLogin = async () => {
     try {
       await login(email, password, "admin");
-      navigation.navigate("Home" as never);
     } catch (error: any) {
       alert(error.message);
       navigation.reset({

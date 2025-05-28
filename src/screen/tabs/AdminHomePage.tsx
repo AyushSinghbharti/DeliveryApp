@@ -12,14 +12,12 @@ import {
 import { StatusBar } from "expo-status-bar";
 import { AuthContext } from "../../context/AuthContext";
 import { useOrderContext } from "../../context/OrderContext";
-import { useNavigation } from "@react-navigation/native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import colours from "../../components/colours";
 
 export default function AdminHomepage() {
   const { userInfo, logout } = useContext(AuthContext);
   const { deliveryGuys } = useOrderContext();
-  const navigation = useNavigation<any>();
   
   const DeliveryGuyCard = ({ item }: { item: any }) => {
     return (

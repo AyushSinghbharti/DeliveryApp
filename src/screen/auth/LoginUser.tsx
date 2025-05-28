@@ -21,7 +21,6 @@ export default function LoginUser() {
   const handleLogin = async () => {
     try {
       await login(email, password, "user");
-      navigation.navigate("Home" as never);
     } catch (error: any) {
       alert(error.message);
       navigation.reset({
