@@ -16,8 +16,6 @@ import {
 import { db } from "../providers/firebase";
 import { ProductOrder } from "../types/OrderInterface";
 import DeliveryGuy from "../types/DeliveryGuyInterface";
-import MapView, { Marker } from "react-native-maps";
-import MapViewDirections from "react-native-maps-directions";
 import * as Location from "expo-location";
 
 interface OrderContextProps {

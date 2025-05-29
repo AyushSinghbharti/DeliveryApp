@@ -15,14 +15,6 @@ import { ProductOrder } from "../../types/OrderInterface";
 import { useOrderContext } from "../../context/OrderContext";
 import colours from "../../components/colours";
 import DeliveryGuy from "../../types/DeliveryGuyInterface";
-import MapView, {
-  Marker,
-  Polyline,
-  UrlTile,
-  PROVIDER_DEFAULT,
-  PROVIDER_GOOGLE,
-} from "react-native-maps";
-import MapViewDirections from "react-native-maps-directions";
 
 type RootStackParamList = {
   OrderDetail: { order: ProductOrder };
@@ -32,46 +24,8 @@ const OrderDetailsScreen = () => {
   const route = useRoute<RouteProp<RootStackParamList, "OrderDetail">>();
   const { order } = route.params;
   const [deliveryGuy, setDeliveryGuy] = useState<DeliveryGuy | null>();
-  const { currentLocation, getDeliveryGuyByOrderId } = useOrderContext();
-  const [routeCoords, setRouteCoords] = useState([]);
-  const [distance, setDistance] = useState<Number>(0);
+  const { getDeliveryGuyByOrderId } = useOrderContext();
   const navigation = useNavigation();
-
-  const YOUR_API_KEY =
-    "5b3ce3597851110001cf62483ed3f8c022254b2d92e9cf43da3de4de";
-  const origin = currentLocation;
-  const destination = {
-    latitude: order.address.coordinates.latitude,
-    longitude: order.address.coordinates.longitude,
-  };
-
-  useEffect(() => {
-    const fetchRoute = async () => {
-      const apiKey = "5b3ce3597851110001cf62483ed3f8c022254b2d92e9cf43da3de4de";
-      const url = `https://api.openrouteservice.org/v2/directions/driving-car?api_key=${apiKey}&start=${origin.longitude},${origin.latitude}&end=${destination.longitude},${destination.latitude}`;
-
-      try {
-        const res = await fetch(url);
-        const data = await res.json();
-        setDistance(
-          Number(
-            (data.features[0].properties.summary.distance / 1000).toFixed(2)
-          )
-        );
-        const coords = data.features[0].geometry.coordinates.map(
-          ([lon, lat]) => ({
-            latitude: lat,
-            longitude: lon,
-          })
-        );
-        setRouteCoords(coords);
-      } catch (err) {
-        console.error("Failed to fetch route:", err);
-      }
-    };
-
-    fetchRoute();
-  }, []);
 
   useEffect(() => {
     const fetchDeliveryGuy = async () => {
@@ -198,66 +152,12 @@ const OrderDetailsScreen = () => {
 
         <Text style={styles.sectionTitle}>Current Location</Text>
         <View style={styles.mapContainer}>
-          <MapView
-            style={styles.mapImage}
-            provider={PROVIDER_DEFAULT}
-            initialRegion={{
-              latitude: origin?.latitude ?? 0,
-              longitude: origin?.longitude ?? 0,
-              latitudeDelta: 0.05,
-              longitudeDelta: 0.05,
+          <Image
+            source={{
+              uri: "https://cdn.usegalileo.ai/maps/4a05a9f8-d8ed-4215-9bbe-d3ce95dfe367.png",
             }}
-          >
-            <UrlTile
-              urlTemplate="https://c.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              maximumZ={19}
-              flipY={false}
-            />
-
-            {origin && (
-              <Marker
-                coordinate={origin}
-                title={`${distance.toString()} km Away`}
-              >
-                <Image
-                  source={{ uri: deliveryGuy?.profile_image }}
-                  style={{ height: 35, width: 35, borderWidth: 1 }}
-                />
-                <View
-                  style={{
-                    backgroundColor: "white",
-                    width: "75%",
-                    height: "auto",
-                    borderRadius: 5,
-                    elevation: 5,
-                    borderWidth: 1,
-                    borderBottomWidth: 2.5,
-                    borderRightWidth: 2.5,
-                    borderColor: "black",
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontWeight: "bold",
-                      fontSize: 12,
-                      textAlign: "center",
-                    }}
-                  >
-                    {distance.toString()} km Away
-                  </Text>
-                </View>
-              </Marker>
-            )}
-            <Marker coordinate={destination} title="Order Location" />
-
-            {routeCoords.length > 0 && (
-              <Polyline
-                coordinates={routeCoords}
-                strokeColor="blue"
-                strokeWidth={4}
-              />
-            )}
-          </MapView>
+            style={styles.mapImage}
+          />
         </View>
 
         {/* Deliveryman Section */}
