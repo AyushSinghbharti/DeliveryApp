@@ -196,7 +196,6 @@ const OrderDetailsScreen = () => {
           </View>
         </View>
 
-        {/* Current Location Section */}
         <Text style={styles.sectionTitle}>Current Location</Text>
         <View style={styles.mapContainer}>
           <MapView
@@ -216,38 +215,40 @@ const OrderDetailsScreen = () => {
             />
 
             {origin && (
-              <Marker coordinate={origin} title="You" titleVisibility="visible">
-                {/* <View style={{justifyContent: 'center', alignItems: 'center'}}> */}
+              <Marker
+                coordinate={origin}
+                title={`${distance.toString()} km Away`}
+              >
+                <Image
+                  source={{ uri: deliveryGuy?.profile_image }}
+                  style={{ height: 35, width: 35, borderWidth: 1 }}
+                />
                 <View
                   style={{
-                    flex: 1,
                     backgroundColor: "white",
-                    width: 75,
-                    height: 75,
-                    paddingHorizontal: 8,
-                    paddingVertical: 8,
+                    width: "75%",
+                    height: "auto",
                     borderRadius: 5,
                     elevation: 5,
                     borderWidth: 1,
                     borderBottomWidth: 2.5,
                     borderRightWidth: 2.5,
                     borderColor: "black",
-                    alignItems: "center",
-                    justifyContent: "center",
                   }}
                 >
-                  <Image
-                    source={{ uri: deliveryGuy?.profile_image }}
-                    style={{ height: 36, width: 36, borderWidth: 1 }}
-                  />
-                  <Text style={{ fontWeight: "bold", fontSize: 12, textAlign: 'center' }}>
+                  <Text
+                    style={{
+                      fontWeight: "bold",
+                      fontSize: 12,
+                      textAlign: "center",
+                    }}
+                  >
                     {distance.toString()} km Away
                   </Text>
                 </View>
-                {/* </View> */}
               </Marker>
             )}
-            <Marker coordinate={destination} title="End" />
+            <Marker coordinate={destination} title="Order Location" />
 
             {routeCoords.length > 0 && (
               <Polyline
@@ -434,12 +435,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginVertical: 12,
     borderRadius: 12,
+    overflow: "hidden",
     ...elevatedBorder,
   },
   mapImage: {
+    overflow: "hidden",
     width: "100%",
     aspectRatio: 16 / 9,
-    borderRadius: 12,
+    borderRadius: 24,
   },
   deliverymanRow: {
     flexDirection: "row",
