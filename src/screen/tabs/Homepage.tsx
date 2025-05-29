@@ -8,6 +8,7 @@ import {
   Image,
   TextInput,
   ScrollView,
+  Pressable,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { AuthContext } from "../../context/AuthContext";
@@ -26,7 +27,7 @@ export default function Homepage() {
 
   const DetailList = ({ item }: { item: any }) => {
     return (
-      <TouchableOpacity
+      <Pressable
         style={[styles.detailCard]}
         onPress={() => navigation.navigate("OrderDetail", { order: item })}
       >
@@ -44,13 +45,13 @@ export default function Homepage() {
             <Text style={styles.postedTime}>4hr</Text>
           </View>
         </View>
-      </TouchableOpacity>
+      </Pressable>
     );
   };
 
   const RecentList = ({ item, index }: { item: any; index: number }) => {
     return (
-      <View
+      <Pressable
         key={item.id}
         style={[
           styles.recentCard,
@@ -58,6 +59,7 @@ export default function Homepage() {
             backgroundColor: index % 2 === 0 ? "#FFE5D0" : "#FFF2E2",
           },
         ]}
+        onPress={() => navigation.navigate("OrderDetail", { order: item })}
       >
         <View style={styles.recentRow}>
           <Image source={{ uri: item.image }} style={styles.recentImage} />
@@ -74,7 +76,7 @@ export default function Homepage() {
           <Text style={styles.recentAmount}>Rs. {item.amount}</Text>
           <Text style={styles.recentCategory}>Few Hours Ago</Text>
         </View>
-      </View>
+      </Pressable>
     );
   };
 
@@ -149,7 +151,7 @@ export default function Homepage() {
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={styles.sectionTitle}>Recent Orders ({2})</Text>
+        <Text style={styles.sectionTitle}>Recent Orders ({4})</Text>
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
